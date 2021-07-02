@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import matplotlib.pyplot as plt
 from dataclasses import dataclass
 
 
@@ -18,12 +17,13 @@ class Experiment:
         return f'{self.name}: {self.year_start} - {self.year_finish}, {self.luminocity:.2e}'
 
 
-def experiments() -> list[Experiment]:
-    return [
-        Experiment('CESR', 'CLEO', ),
+def experiments() -> dict[str, Experiment]:
+    return {
+        Experiment('CESR', 'CLEO', ?, ?, 1978, ),
+        Experiment('CESR-c', 'CLEO-c', ),
         Experiment('BEPC', 'BESII', 0.11, 12.6e30, 1989, 2005, 'ctau'),
         Experiment('BEPC-II', 'BESIII', 30, 12.6e30, 1989, 2005, 'ctau')
-    ]
+    }
 
 
 def colliders_plot(data):
