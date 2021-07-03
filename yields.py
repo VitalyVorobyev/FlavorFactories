@@ -21,7 +21,7 @@ def get_charm_meson_yields():
         'LHCb': 8.e12,
         'BaBar': 8.e8,
         'Belle': 13.e8,
-        'BelleII': 13.e8*40,
+        'BelleII': 13.e8 * 40,
         'CLEOc': 5.e6,
         'BESIII': 2.e7,
         'SCT': 2.e7,
