@@ -23,6 +23,6 @@ def get_charm_meson_yields():
         'Belle'  : 13.e8,
         'BelleII': 5.2e9,
         'CLEO-c' : 5.e6,
-        'BESIII' : 2.e7,
+        'BESIII' : 5.e7,
         'SCT'    : 5.e9,
     }
