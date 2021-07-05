@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+
+import os
 from colliders import Experiment, get_experiments
 from colors import kelly_gen
 import matplotlib.pyplot as plt
@@ -7,10 +10,10 @@ matplotlib.rcParams.update({'font.size': 16})
 
 def yield_plot(data, expmap, ylbl, lbl, lmap=None, show=True):
     if lmap is None:
-        lmap = {key: key for key in ['ctau', 'b', 'Z']}
+        lmap = {key: key for key in ['ctau', 'b', 'Z', 'p']}
 
     cgen = kelly_gen()
-    cmap = {key: col for key, col in zip(['ctau', 'b', 'Z'], cgen)}
+    cmap = {key: col for key, col in zip(['ctau', 'b', 'Z', 'p'], cgen)}
     keys = set()
 
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -35,7 +38,7 @@ def yield_plot(data, expmap, ylbl, lbl, lmap=None, show=True):
 
     fig.tight_layout()
 
-    plt.savefig(f'yield{lbl}.png')
+    save_plot(f'yield{lbl}')
     if show:
         plt.show()
 
@@ -69,9 +72,16 @@ def experiments_plot(data: dict[str: Experiment], lmap=None, show=True):
 
     fig.tight_layout()
 
-    plt.savefig('colliders.png')
+    save_plot('colliders')
     if show:
         plt.show()
+
+
+def save_plot(fname, ext=['png']):
+    path = './plots' if os.path.isdir('./plots') else '.'
+    for ex in ext:
+        plt.savefig(f'{path}/{fname}.{ex}')
+
 
 if __name__ == '__main__':
     expmap = get_experiments()

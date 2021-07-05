@@ -7,6 +7,7 @@ def get_tau_yelds():
         'BaBar'  : 0.5e9,
         'BelleII': 4.6e10,
         'SCT'    : 2.1e10,
+        'BESIII' : 2.e8
     }
 
 def get_jpsi_yields():
