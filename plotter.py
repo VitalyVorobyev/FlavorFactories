@@ -3,20 +3,52 @@ from colors import kelly_gen
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.rcParams.update({'font.size': 16})
-import numpy as np
-
-def yield_plot(data):
-    pass
 
 
-def experiments_plot(data: dict[str: Experiment]):
-    fig, ax = plt.subplots(figsize=(8, 6))
+def yield_plot(data, expmap, ylbl, lbl, lmap=None, show=True):
+    if lmap is None:
+        lmap = {key: key for key in ['ctau', 'b', 'Z']}
 
     cgen = kelly_gen()
     cmap = {key: col for key, col in zip(['ctau', 'b', 'Z'], cgen)}
-    # lmap = {'ctau', 'b', 'Z'}
     keys = set()
 
+    fig, ax = plt.subplots(figsize=(8, 6))
+    for exp, nevt in data.items():
+        exp = expmap[exp]
+        x = [exp.year_start, exp.year_finish]
+        y = [nevt] * 2
+        if exp.group in keys:
+            ax.plot(x, y, color=cmap.get(exp.group, 'y'), linewidth=3)
+        else:
+            keys.add(exp.group)
+            ax.plot(x, y, color=cmap.get(exp.group, 'y'), linewidth=3, label=exp.group)
+        ax.text(x[0], y[0], exp.detector_name)
+
+    ax.set_xlabel('Data collection', fontsize=18)
+    ax.set_ylabel(ylbl, fontsize=18)
+    ax.minorticks_on()
+    ax.grid()
+    ax.grid(which='minor', linestyle=':')
+    ax.legend()
+    ax.semilogy()
+
+    fig.tight_layout()
+
+    plt.savefig(f'yield{lbl}.png')
+    if show:
+        plt.show()
+
+
+def experiments_plot(data: dict[str: Experiment], lmap=None, show=True):
+    if lmap is None:
+        lmap = {key: key for key in ['ctau', 'b', 'Z']}
+
+    cgen = kelly_gen()
+    cmap = {key: col for key, col in zip(['ctau', 'b', 'Z'], cgen)}
+    keys = set()
+
+    fig, ax = plt.subplots(figsize=(8, 6))
     for exp in data.values():
         x = [exp.year_start, exp.year_finish]
         y = [exp.luminocity] * 2
@@ -24,10 +56,10 @@ def experiments_plot(data: dict[str: Experiment]):
             ax.plot(x, y, color=cmap.get(exp.group, 'y'), linewidth=3)
         else:
             keys.add(exp.group)
-            ax.plot(x, y, color=cmap.get(exp.group, 'y'), linewidth=3, label=exp.group)
+            ax.plot(x, y, color=cmap.get(exp.group, 'y'), linewidth=3, label=lmap[exp.group])
         ax.text(x[0], y[0], exp.collider_name)
 
-    ax.set_xlabel('Operation period', fontsize=18)
+    ax.set_xlabel('Data collection', fontsize=18)
     ax.set_ylabel(r'Peak luminocity, $\mathrm{cm}^{-2}\mathrm{s}^{-1}$', fontsize=18)
     ax.minorticks_on()
     ax.grid()
@@ -38,10 +70,19 @@ def experiments_plot(data: dict[str: Experiment]):
     fig.tight_layout()
 
     plt.savefig('colliders.png')
-    plt.show()
+    if show:
+        plt.show()
 
 if __name__ == '__main__':
-    data = {key: val for key, val in get_experiments().items()
+    expmap = get_experiments()
+    
+    data = {key: val for key, val in expmap.items()
             if val.group in ['ctau', 'b', 'Z']}
 
-    experiments_plot(data)
+    experiments_plot(data, show=False)
+
+    from yields import get_tau_yelds, get_charm_meson_yields
+    yield_plot(get_tau_yelds(), expmap, 'Tau leptons yield', 'tau', show=False)
+    yield_plot(get_charm_meson_yields(), expmap, 'Charm mesons yield', 'charm', show=False)
+
+    plt.show()

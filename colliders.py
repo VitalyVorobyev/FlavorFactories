@@ -34,7 +34,3 @@ def get_experiments() -> dict[str, Experiment]:
         'LHCbUI'  : Experiment('LHC'      , 'LHCb'   , 50.    , None     , 2021, 2030, 'p'),
         'LHCbUII' : Experiment('LHC'      , 'LHCb'   , 300.   , None     , 2030, 2035, 'p'),
     }
-
-
-def colliders_plot(data):
-    pass
