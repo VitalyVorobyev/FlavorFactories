@@ -2,18 +2,25 @@
 
 import os
 from colliders import Experiment, get_experiments
-from colors import kelly_gen
+from colors import kelly_gen, pycol_gen
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.rcParams.update({'font.size': 16})
+
+
+def linestyle_gen():
+    for item in ['-', ':', '--', '-.']:
+        yield item
 
 
 def yield_plot(data, expmap, ylbl, lbl, lmap=None, show=True):
     if lmap is None:
         lmap = {key: key for key in ['ctau', 'b', 'Z', 'p']}
 
-    cgen = kelly_gen()
+    cgen = pycol_gen()
     cmap = {key: col for key, col in zip(['ctau', 'b', 'Z', 'p'], cgen)}
+    sgen = linestyle_gen()
+    smap = {key: col for key, col in zip(['ctau', 'b', 'Z', 'p'], sgen)}
     keys = set()
 
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -22,10 +29,12 @@ def yield_plot(data, expmap, ylbl, lbl, lmap=None, show=True):
         x = [exp.year_start, exp.year_finish]
         y = [nevt] * 2
         if exp.group in keys:
-            ax.plot(x, y, color=cmap.get(exp.group, 'y'), linewidth=3)
+            ax.plot(x, y, color=cmap.get(exp.group, 'y'),
+                    linestyle=smap.get(exp.group, '-'), linewidth=3)
         else:
             keys.add(exp.group)
-            ax.plot(x, y, color=cmap.get(exp.group, 'y'), linewidth=3, label=exp.group)
+            ax.plot(x, y, color=cmap.get(exp.group, 'y'),
+                    linestyle=smap.get(exp.group, '-'), linewidth=3, label=exp.group)
         ax.text(x[0], y[0], exp.detector_name)
 
     ax.set_xlabel('Data collection', fontsize=18)
@@ -38,7 +47,7 @@ def yield_plot(data, expmap, ylbl, lbl, lmap=None, show=True):
 
     fig.tight_layout()
 
-    save_plot(f'yield{lbl}')
+    save_plot(f'yield{lbl}', ['png', 'pdf'])
     if show:
         plt.show()
 
@@ -72,7 +81,7 @@ def experiments_plot(data: dict[str: Experiment], lmap=None, show=True):
 
     fig.tight_layout()
 
-    save_plot('colliders')
+    save_plot('colliders', ['png', 'pdf'])
     if show:
         plt.show()
 
