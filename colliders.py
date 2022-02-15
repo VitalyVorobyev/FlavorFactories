@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 from dataclasses import dataclass
+from typing import Dict
 
 
 @dataclass
@@ -17,7 +18,7 @@ class Experiment:
         return f'{self.name}: {self.year_start} - {self.year_finish}, {self.luminocity:.2e}'
 
 
-def get_experiments() -> dict[str, Experiment]:
+def get_experiments():
     return {
         'BESII'   : Experiment('BEPC'     , 'BESII'  , 0.11   , 1.26e31  , 1989, 2005, 'ctau'),
         'CLEO-c'  : Experiment('CESR-c'   , 'CLEO-c' , 2.     , 0.76e32  , 2002, 2008, 'ctau'),
@@ -27,6 +28,7 @@ def get_experiments() -> dict[str, Experiment]:
         'SLD'     : Experiment('SLC'      , 'SLD'    , 0.022  , 2.2e30   , 1989, 1998, 'Z'),
         'FCC-ee'  : Experiment('FCC-ee'   , 'FCC-ee' , 130000., 2.e36    , 2035, 2040, 'Z'),
         'CLEO'    : Experiment('CESR'     , 'CLEO'   , 41.5   , 1.28e33  , 1979, 2002, 'b'),
+        'ARGUS'   : Experiment('DORIS'    , 'ARGUS'  , 17     , 3.1e31   , 1973, 1993, 'b'),
         'Belle'   : Experiment('KEKB'     , 'Belle'  , 1040.  , 2.1083e34, 1999, 2010, 'b'),
         'BaBar'   : Experiment('PEP-II'   , 'BaBar'  , 557.   , 1.2069e34, 1999, 2008, 'b'),
         'BelleII' : Experiment('SuperKEKB', 'BelleII', 50000. , 8.e35    , 2018, 2030, 'b'),

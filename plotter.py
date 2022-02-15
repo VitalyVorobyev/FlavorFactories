@@ -52,7 +52,7 @@ def yield_plot(data, expmap, ylbl, lbl, lmap=None, show=True):
         plt.show()
 
 
-def experiments_plot(data: dict[str: Experiment], lmap=None, show=True):
+def experiments_plot(data, lmap=None, show=True):
     if lmap is None:
         lmap = {key: key for key in ['ctau', 'b', 'Z']}
 
